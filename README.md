@@ -339,6 +339,31 @@ Screenshots:
 
 ### TODO2: ArgoCD Rollouts & Upgrade Application with Argo Rollouts (Canary Deploy)
 
+```
+### Argo Rollouts: Workload clusters
+
+### Install kubectl plugin: Kubectl Plugin.
+curl -LO https://github.com/argoproj/argo-rollouts/releases/latest/download/kubectl-argo-rollouts-linux-amd64
+chmod +x ./kubectl-argo-rollouts-linux-amd64
+sudo mv ./kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts
+
+Install Argo Rollout in both workload clusters:
+
+kubectl --context="${CTX_CLUSTER1}" create namespace argo-rollouts
+kubectl --context="${CTX_CLUSTER1}" apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
+kubectl --context="${CTX_CLUSTER2}" create namespace argo-rollouts
+kubectl --context="${CTX_CLUSTER2}" apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
+
+### Deploy Application Sets
+kubectl apply -f argo-resources/application-set/appset-helloworld.yaml
+kubectl get svc -n helloworld
+kubectl apply -f multicluster-canary/istio-resources/application-set/appset-istio-resources.yaml
+kubectl apply -f multicluster-canary/istio-resources/application-set/inbound-traffic/gateway.yaml 
+kubectl apply -f multicluster-canary/istio-resources/application-set/inbound-traffic/virtualservice.yaml
+kubectl apply -f multicluster-canary/argo-resources/rollout/appset-rollouts.yaml
+kubectl get rollout -A
+```
+
 ### TODO3: Deploy the monitoring stack (Prometheus Operator on Workload Clusters + Install and Configure Thanos)
 
 ## Clean local environment
