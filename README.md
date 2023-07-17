@@ -281,7 +281,43 @@ INFO[0001] ClusterRoleBinding "argocd-manager-role-binding" created
 INFO[0006] Created bearer token secret for ServiceAccount "argocd-manager" 
 Cluster 'https://172.18.0.2:6443' added
 
-### Add demo-primary1 & demo_primary2 apps via ArgoUI: Browser -> http://172.18.0.4 (URL: https://github.com/adavarski/ArgoCD-GitOps-playground, Path: helm, Namespace: default)
+### Add demo-primary1 & demo_primary2 apps via ArgoUI: Browser -> http://172.18.0.4 (Repo URL: https://github.com/adavarski/ArgoCD-GitOps-playground, Path: helm, Cluster: primary1 & primary2, Namespace: default)
+
+$ argocd  app get demo-primary1
+Name:               argocd/demo-primary1
+Project:            default
+Server:             https://172.18.0.3:6443
+Namespace:          default
+URL:                https://172.18.255.10/applications/demo-primary1
+Repo:               https://github.com/adavarski/ArgoCD-GitOps-playground
+Target:             HEAD
+Path:               helm
+SyncWindow:         Sync Allowed
+Sync Policy:        Automated
+Sync Status:        Synced to HEAD (483d668)
+Health Status:      Healthy
+
+GROUP  KIND        NAMESPACE  NAME                        STATUS  HEALTH   HOOK  MESSAGE
+       Service     default    demo-primary1-helm-example  Synced  Healthy        service/demo-primary1-helm-example created
+apps   Deployment  default    demo-primary1-helm-example  Synced  Healthy        deployment.apps/demo-primary1-helm-example created
+
+$ argocd  app get demo-primary2
+Name:               argocd/demo-primary2
+Project:            default
+Server:             https://172.18.0.2:6443
+Namespace:          default
+URL:                https://172.18.255.10/applications/demo-primary2
+Repo:               https://github.com/adavarski/ArgoCD-GitOps-playground
+Target:             HEAD
+Path:               helm
+SyncWindow:         Sync Allowed
+Sync Policy:        Automated
+Sync Status:        Synced to HEAD (483d668)
+Health Status:      Healthy
+
+GROUP  KIND        NAMESPACE  NAME                        STATUS  HEALTH   HOOK  MESSAGE
+       Service     default    demo-primary2-helm-example  Synced  Healthy        service/demo-primary2-helm-example created
+apps   Deployment  default    demo-primary2-helm-example  Synced  Healthy        deployment.apps/demo-primary2-helm-example created
 
 
 $ argocd cluster list
@@ -289,7 +325,6 @@ SERVER                          NAME           VERSION  STATUS      MESSAGE     
 https://172.18.0.3:6443         kind-primary1  1.25     Successful                                                           
 https://172.18.0.2:6443         kind-primary2  1.25     Successful                                                           
 https://kubernetes.default.svc  in-cluster              Unknown     Cluster has no applications and is not being monitored.  
-
 
 ```
 
@@ -308,11 +343,11 @@ Screenshots:
 
 ## Clean local environment
 ```
-$ kind delete cluster --name=primary1
+$ kind delete cluster --name=argohub
 Deleting cluster "primary1" ...
-$ kind delete cluster --name=remote1
+$ kind delete cluster --name=primary1
 Deleting cluster "remote1" ...
-$ kind delete cluster --name=remote2
+$ kind delete cluster --name=primary2
 Deleting cluster "remote2" .
 ```
 ## [Thanks](https://github.com/antoineco/istio-lab)
