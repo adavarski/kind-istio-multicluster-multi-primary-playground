@@ -364,7 +364,99 @@ kubectl apply -f multicluster-canary/argo-resources/rollout/appset-rollouts.yaml
 kubectl get rollout -A
 ```
 
-### TODO3: Deploy the monitoring stack (Prometheus Operator on Workload Clusters + Install and Configure Thanos)
+### Deploy the monitoring stack (Prometheus Operator on Workload Clusters + Install and Configure Thanos)
+```
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+kubectl config use-context kind-primary1
+helm install prometheus-operator \
+  --set prometheus.thanos.create=true \
+  --set operator.service.type=ClusterIP \
+  --set prometheus.service.type=ClusterIP \
+  --set alertmanager.service.type=ClusterIP \
+  --set prometheus.thanos.service.type=LoadBalancer \
+  --set prometheus.externalLabels.cluster="data-producer-1" \
+  bitnami/kube-prometheus
+
+kubectl config use-context kind-primary2
+helm install prometheus-operator \
+  --set prometheus.thanos.create=true \
+  --set operator.service.type=ClusterIP \
+  --set prometheus.service.type=ClusterIP \
+  --set alertmanager.service.type=ClusterIP \
+  --set prometheus.thanos.service.type=LoadBalancer \
+  --set prometheus.externalLabels.cluster="data-producer-2" \
+  bitnami/kube-prometheus
+
+cd multicluster-canary/monitoring
+helm install thanos bitnami/thanos -n monitoring --values values.yaml
+$ kubectl get all -n monitoring
+NAME                                         READY   STATUS             RESTARTS      AGE
+pod/thanos-bucketweb-64f7c4c967-lmg69        1/1     Running            0             108s
+pod/thanos-compactor-6dcb4df68-kch94         1/1     Running            0             107s
+pod/thanos-minio-7bc9c95ccc-qxq77            1/1     Running            0             108s
+pod/thanos-query-f89c8dbbc-nr44l             1/1     Running            0             108s
+pod/thanos-query-frontend-57c779496c-n8djn   1/1     Running            0             108s
+pod/thanos-ruler-0                           1/1     Running            0             106s
+pod/thanos-storegateway-0                    0/1     CrashLoopBackOff   1 (11s ago)   106s
+
+NAME                            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)              AGE
+service/thanos-bucketweb        ClusterIP   10.255.10.149   <none>        8080/TCP             110s
+service/thanos-compactor        ClusterIP   10.255.10.175   <none>        9090/TCP             110s
+service/thanos-minio            ClusterIP   10.255.10.139   <none>        9000/TCP,9001/TCP    110s
+service/thanos-query            ClusterIP   10.255.10.30    <none>        9090/TCP             110s
+service/thanos-query-frontend   ClusterIP   10.255.10.147   <none>        9090/TCP             110s
+service/thanos-query-grpc       ClusterIP   10.255.10.52    <none>        10901/TCP            110s
+service/thanos-ruler            ClusterIP   10.255.10.62    <none>        9090/TCP,10901/TCP   110s
+service/thanos-storegateway     ClusterIP   10.255.10.49    <none>        9090/TCP,10901/TCP   110s
+
+NAME                                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/thanos-bucketweb        1/1     1            1           109s
+deployment.apps/thanos-compactor        1/1     1            1           109s
+deployment.apps/thanos-minio            1/1     1            1           109s
+deployment.apps/thanos-query            1/1     1            1           109s
+deployment.apps/thanos-query-frontend   1/1     1            1           109s
+
+NAME                                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/thanos-bucketweb-64f7c4c967        1         1         1       108s
+replicaset.apps/thanos-compactor-6dcb4df68         1         1         1       108s
+replicaset.apps/thanos-minio-7bc9c95ccc            1         1         1       108s
+replicaset.apps/thanos-query-f89c8dbbc             1         1         1       108s
+replicaset.apps/thanos-query-frontend-57c779496c   1         1         1       108s
+
+NAME                                   READY   AGE
+statefulset.apps/thanos-ruler          1/1     109s
+statefulset.apps/thanos-storegateway   0/1     109s
+
+$ kubectl get secret -n monitoring thanos-minio -o yaml -o jsonpath={.data.root-password} | base64 -d
+
+Substitute this password by KEY in your values.yaml file, and upgrade the helm chart:
+
+helm upgrade thanos bitnami/thanos -n monitoring \
+  --values values.yaml
+
+helm install grafana bitnami/grafana \
+--set service.type=LoadBalancer \
+--set admin.password=admin --namespace monitoring
+
+Add PodMonitor and ServiceMonitor to scrape Istio Metrics
+
+$ export CTX_CLUSTER1=kind-primary1
+$ export CTX_CLUSTER2=kind-primary2
+$ kubectl apply -f monitoring/monitor.yaml --context="${CTX_CLUSTER1}"
+podmonitor.monitoring.coreos.com/envoy-stats-monitor created
+servicemonitor.monitoring.coreos.com/istio-component-monitor created
+$ kubectl apply -f monitoring/monitor.yaml --context="${CTX_CLUSTER2}"
+podmonitor.monitoring.coreos.com/envoy-stats-monitor created
+servicemonitor.monitoring.coreos.com/istio-component-monitor created
+
+
+$ kubectl port-forward -n monitoring svc/thanos-query 9090
+
+Browser (TANOS UI: Prom): http://localhost:9090 (prometheus)
+
+Browser (Grafana UI): http://172.18.255.11:3000 (admin:admin)
+```
 
 ## Clean local environment
 ```
