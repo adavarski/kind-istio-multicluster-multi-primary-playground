@@ -214,10 +214,10 @@ Hello version: v2, instance: helloworld-v2-54dddc5567-v5d77
 
 ```
 
-### TODO1: Setup Kiali for Istio multicluster multi-primary environment (Experimental support)
+### TODO1: Setup Kiali for Istio multicluster multi-primary environment (Note: Kiali -> Experimental support)
 
 
-### ArgoCD staff
+### ArgoCD setup
 
 <img src="screenshots/ArgoFlow.png?raw=true" width="800">
 
@@ -337,7 +337,7 @@ Screenshots:
 <img src="screenshots/ArgoCD-UI-LoadBalancer.png?raw=true" width="1000">
 
 
-### TODO2: ArgoCD Rollouts  & Upgrade Application with Argo Rollouts (Canary Deploy)
+### TODO2: ArgoCD Rollouts & Upgrade Application with Argo Rollouts (Canary Deploy)
 
 ### TODO3: Deploy the monitoring stack (Prometheus Operator on Workload Clusters + Install and Configure Thanos)
 
@@ -350,4 +350,6 @@ Deleting cluster "remote1" ...
 $ kind delete cluster --name=primary2
 Deleting cluster "remote2" .
 ```
-## [Thanks](https://github.com/antoineco/istio-lab)
+### Thanks
+- https://github.com/antoineco/istio-lab
+- https://github.com/edubonifs/multicluster-canary
