@@ -214,10 +214,10 @@ Hello version: v2, instance: helloworld-v2-54dddc5567-v5d77
 
 ```
 
-### TODO1: Setup a multi-cluster environment with Istio and Kiali (Experimental support)
+### TODO1: Setup Kiali for Istio multicluster multi-primary environment (Experimental support)
 
 
-### ArgoCD
+### ArgoCD staff
 
 <img src="screenshots/ArgoFlow.png?raw=true" width="800">
 
@@ -281,26 +281,28 @@ INFO[0001] ClusterRoleBinding "argocd-manager-role-binding" created
 INFO[0006] Created bearer token secret for ServiceAccount "argocd-manager" 
 Cluster 'https://172.18.0.2:6443' added
 
+### Add demo-primary1 & demo_primary2 apps via ArgoUI: Browser -> http://172.18.0.4 (URL: https://github.com/adavarski/ArgoCD-GitOps-playground, Path: helm, Namespace: default)
+
+
 $ argocd cluster list
 SERVER                          NAME           VERSION  STATUS      MESSAGE                                                  PROJECT
 https://172.18.0.3:6443         kind-primary1  1.25     Successful                                                           
 https://172.18.0.2:6443         kind-primary2  1.25     Successful                                                           
 https://kubernetes.default.svc  in-cluster              Unknown     Cluster has no applications and is not being monitored.  
 
-### Add demo-primary1 & demo_primary2 apps via ArgoUI: Browser -> http://172.18.0.4 (URL: https://github.com/adavarski/ArgoCD-GitOps-playground, Path: helm, Namespace: default)
 
 ```
 
 Screenshots:
 
 <img src="screenshots/ArgoCD-UI-APPS.png?raw=true" width="800">
+
 <img src="screenshots/ArgoCD-UI-Clusters.png?raw=true" width="800">
+
 <img src="screenshots/ArgoCD-UI-LoadBalancer.png?raw=true" width="800">
 
 
 ### TODO2: ArgoCD Rollouts  & Upgrade Application with Argo Rollouts (Canary Deploy)
-
-
 
 ### TODO3: Deploy the monitoring stack (Prometheus Operator on Workload Clusters + Install and Configure Thanos)
 
