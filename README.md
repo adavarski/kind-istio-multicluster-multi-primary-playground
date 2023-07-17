@@ -330,11 +330,11 @@ https://kubernetes.default.svc  in-cluster              Unknown     Cluster has 
 
 Screenshots:
 
-<img src="screenshots/ArgoCD-UI-APPS.png?raw=true" width="800">
+<img src="screenshots/ArgoCD-UI-APPS.png?raw=true" width="1000">
 
-<img src="screenshots/ArgoCD-UI-Clusters.png?raw=true" width="800">
+<img src="screenshots/ArgoCD-UI-Clusters.png?raw=true" width="1000">
 
-<img src="screenshots/ArgoCD-UI-LoadBalancer.png?raw=true" width="800">
+<img src="screenshots/ArgoCD-UI-LoadBalancer.png?raw=true" width="1000">
 
 
 ### TODO2: ArgoCD Rollouts  & Upgrade Application with Argo Rollouts (Canary Deploy)
