@@ -337,7 +337,7 @@ Screenshots:
 <img src="screenshots/ArgoCD-UI-LoadBalancer.png?raw=true" width="1000">
 
 
-### TODO2: ArgoCD Rollouts & Upgrade Application with Argo Rollouts (Canary Deploy)
+### ArgoCD Rollouts & Upgrade Application with Argo Rollouts (Canary Deploy)
 
 ```
 ### Argo Rollouts: Workload clusters
