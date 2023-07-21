@@ -49,17 +49,18 @@ Example Output:
 
 ```
 [+] Creating KinD clusters
-   ⠿ [argohub] Cluster already exists
-   ⠿ [primary2] Cluster already exists
-   ⠿ [primary1] Cluster already exists
+   ⠿ [primary1] Cluster created
+   ⠿ [primary2] Cluster created
+   ⠿ [argohub] Cluster created
 [+] Adding routes to other clusters
-   ⠿ [argohub] Route to 10.20.0.0/24 already exists
-   ⠿ [argohub] Route to 10.30.0.0/24 already exists
-   ⠿ [primary1] Route to 10.10.0.0/24 already exists
-   ⠿ [primary1] Route to 10.30.0.0/24 already exists
-   ⠿ [primary2] Route to 10.10.0.0/24 already exists
-   ⠿ [primary2] Route to 10.20.0.0/24 already exists
+   ⠿ [argohub] Route to 10.20.0.0/24 added
+   ⠿ [argohub] Route to 10.30.0.0/24 added
+   ⠿ [primary1] Route to 10.10.0.0/24 added
+   ⠿ [primary1] Route to 10.30.0.0/24 added
+   ⠿ [primary2] Route to 10.10.0.0/24 added
+   ⠿ [primary2] Route to 10.20.0.0/24 added
 [+] Deploying MetalLB inside primary
+   ⠿ [argohub] MetalLB deployed
    ⠿ [primary1] MetalLB deployed
    ⠿ [primary2] MetalLB deployed
 [+] Deploying Istio
@@ -89,6 +90,7 @@ Example Output:
      ✔ Installation completeMaking this installation the default for injection and validation.
 
    ⠿ [primary2] Configured as Istio primary
+
 ```
 
 ### Verify the installation 
