@@ -392,6 +392,8 @@ helm install prometheus-operator \
   bitnami/kube-prometheus
 
 cd multicluster-canary/monitoring
+kubectl config use-context kind-argohub
+kubectl create ns monitoring
 helm install thanos bitnami/thanos -n monitoring --values values.yaml
 $ kubectl get all -n monitoring
 NAME                                         READY   STATUS             RESTARTS      AGE
