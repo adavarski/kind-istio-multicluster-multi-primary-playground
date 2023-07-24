@@ -32,14 +32,14 @@ declare -A cluster_primary1=(
   [name]=primary1
   [pod_subnet]=10.20.0.0/16
   [svc_subnet]=10.255.20.0/24
-  [metallb_l2pool_start]=10
+  [metallb_l2pool_start]=30
 )
 
 declare -A cluster_primary2=(
   [name]=primary2
   [pod_subnet]=10.30.0.0/16
   [svc_subnet]=10.255.30.0/24
-  [metallb_l2pool_start]=10
+  [metallb_l2pool_start]=50
 )
 
 #--------------------------------------
