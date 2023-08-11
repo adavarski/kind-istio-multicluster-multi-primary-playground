@@ -391,6 +391,15 @@ helm install prometheus-operator \
   --set prometheus.externalLabels.cluster="data-producer-2" \
   bitnami/kube-prometheus
 
+$ kubectl config use-context kind-primary1
+$ kubectl get svc --all-namespaces|grep thanos
+default          prometheus-operator-kube-p-prometheus-thanos         LoadBalancer   10.255.20.171   172.19.255.30   10901:30621/TCP                102m
+$ kubectl config use-context kind-primary2
+$ kubectl get svc --all-namespaces|grep thanos
+default          prometheus-operator-kube-p-prometheus-thanos         LoadBalancer   10.255.30.185   172.19.255.50   10901:30493/TCP                100m
+
+Edit values.yaml (SIDECAR-SERVICE-IP-ADDRESS-1:10901 & SIDECAR-SERVICE-IP-ADDRESS-2:10901 -> 172.19.255.30:10901 & 172.19.255.50:10901)
+
 cd multicluster-canary/monitoring
 kubectl config use-context kind-argohub
 kubectl create ns monitoring
