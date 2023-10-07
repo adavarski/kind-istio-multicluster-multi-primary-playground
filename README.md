@@ -1,4 +1,4 @@
-# KinD: Istio Lab multi-cluster
+# KinD: Istio Lab multi-cluster (multi-primary)
 
 Lab to experiment with multi-cluster Istio installations (multi-primary).
 
